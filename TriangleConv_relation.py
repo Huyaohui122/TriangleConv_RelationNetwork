@@ -233,6 +233,7 @@ def main():
         schedular.step()
         relation_network_scheduler.step()
         model.train()
+        relation_network.train()
         support_train, support_train_labels, support_test, support_test_labels = new_getdataset(support_data = support_data, index = index, val_data = val_data, train_shuffle=False,test_shuffle=True, train1=True)
         out_support_train = model(support_train)
         out_support_train_2 = out_support_train.view(class_number, support_train_shot, 1, 64)
@@ -268,7 +269,8 @@ def main():
         if(episode+1)%500== 0:
             print("Testing")
             total_rewards = 0
-
+            model.eval()
+            relation_network.eval()
             for i in range(300):
                 test_train, test_train_labels, test_test, test_test_labels = new_getdataset(support_data = support_data, val_data = val_data, index = index, train_shuffle=False,test_shuffle=True, train1= False)
                 out_test_train = model(test_train)
@@ -304,6 +306,8 @@ def main():
                 #print("save networks for episode:",episode+1)
 
                 best_accuracy = test_accuracy
+             model.train()
+             relation_network.train()
     print("best_accuracy:",best_accuracy)
     return best_accuracy
 if __name__ == '__main__':
