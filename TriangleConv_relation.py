@@ -237,7 +237,7 @@ def main():
         support_train, support_train_labels, support_test, support_test_labels = new_getdataset(support_data = support_data, index = index, val_data = val_data, train_shuffle=False,test_shuffle=True, train1=True)
         out_support_train = model(support_train)
         out_support_train_2 = out_support_train.view(class_number, support_train_shot, 1, 64)
-        out_support_train_3 = torch.mean(out_support_train_2, 1).squeeze(1)
+        out_support_train_3 = torch.sum(out_support_train_2, 1).squeeze(1)
         out_support_train_repeat = out_support_train_3.unsqueeze(0).repeat(class_number * support_test_shot, 1, 1)
 
 
@@ -275,7 +275,7 @@ def main():
                 test_train, test_train_labels, test_test, test_test_labels = new_getdataset(support_data = support_data, val_data = val_data, index = index, train_shuffle=False,test_shuffle=True, train1= False)
                 out_test_train = model(test_train)
                 out_test_train_2 = out_test_train.view(class_number, support_train_shot, 1, 64)
-                out_test_train_3 = torch.mean(out_test_train_2, 1).squeeze(1)
+                out_test_train_3 = torch.sum(out_test_train_2, 1).squeeze(1)
                 out_test_train_repeat = out_test_train_3.unsqueeze(0).repeat(class_number * support_test_shot,
                                                                                    1, 1)
 
